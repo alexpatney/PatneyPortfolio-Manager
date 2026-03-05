@@ -1,0 +1,58 @@
+classDiagram
+    class FinancialAsset {
+        -String name
+        -double currentValue
+        -int riskRating
+        +FinancialAsset(String, double, int)
+        +getName() String
+        +setName(String) void
+        +getCurrentValue() double
+        +setCurrentValue(double) void
+        +getRiskRating() int
+        +setRiskRating(int) void
+        +calculateReturn() double
+        +displayInfo() void
+    }
+
+    class Stock {
+        -String tickerSymbol
+        -int sharesHeld
+        -double pricePerShare
+        -double dividendYield
+        +Stock(String, double, int, String, int, double, double)
+        +getTickerSymbol() String
+        +getSharesHeld() int
+        +getPricePerShare() double
+        +getDividendYield() double
+        +calculateReturn() double
+        +displayInfo() void
+    }
+
+    class Bond {
+        -double faceValue
+        -double couponRate
+        -int yearsToMaturity
+        +Bond(String, double, int, double, double, int)
+        +getFaceValue() double
+        +getCouponRate() double
+        +getYearsToMaturity() int
+        +calculateReturn() double
+        +displayInfo() void
+    }
+
+    class PortfolioManager {
+        -ArrayList~FinancialAsset~ portfolioAssets
+        -Scanner scanner
+        +main(String[] args) void
+        +addAsset() void
+        +viewPortfolio() void
+        +sortPortfolio() void
+        +searchAsset() void
+        +calculateSummary() void
+        +removeAsset() void
+        +getValidInt(int min, int max) int
+    }
+
+    FinancialAsset <|-- Stock : extends
+    FinancialAsset <|-- Bond : extends
+    PortfolioManager --> FinancialAsset : manages ArrayList of
