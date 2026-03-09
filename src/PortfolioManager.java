@@ -55,15 +55,113 @@ public class PortfolioManager{
 
   public static void addAsset(){}
 
-  public static void viewPortfolio(){}
+  public static void viewPortfolio(){
+    System.out.println("\n--- Your Portfolio ---");
+
+    if(portfolioAssets.isEmpty()){
+      System.out.println("Your portfolio is empty. Add some assets first!");
+      return;
+    }
+
+    for(int i = 0; o < portfolioAssets.size(); i++){
+      System.out.println("Asset #" + (i + 1) + ": ");
+      portfolioAssets.get(i).displayInfo();
+    }
+  }
 
   public static void sortPortfolio(){}
 
-  public static void searchAsset(){}
+  public static void searchAsset(){
+    System.out.println("\n--- Search Asset ---");
 
-  public static void calculateSummary(){}
+    if(portfolioAssets.isEmpty()){
+      System.out.println("Your portfolio is empty. Nothing to search.");
+      return;
+    }
 
-  public static void removeAsset(){}
+    System.out.print("Enter asset name to search for: ");
+    String searchName = kb.nextLine().trim();
+
+    while(searchName.isEmpty()){
+      System.out.print("Search term cannot be empty. Enter asset name: ");
+      searchName = kb.nextLine().trim();
+    }
+
+    boolean found = false;
+
+    for(int i = 0; i < portfolioAssets.size(); i++){
+      if(portfolioAssets.get(i).getName().equalsIgnoreCase(searchName)){
+        System.out.println("Asset found at position " + (i + 1) + ": ");
+        portfolioAssets.get(i).displayInfo();
+        found = true;
+      }
+    }
+
+    if(!found){
+      System.out.println("No asset found with the name \"" + searchName + "\".");
+    }
+  }
+
+  public static void calculateSummary(){
+    System.out.println("\n--- Portfolio Summary ---");
+
+    if(portfolioAssets.isEmpty()){
+      System.out.println("Your portfolio is empty. Add some assets first!");
+      return;
+    }
+
+    double totalValue = 0.0;
+    double totalReturn = 0.0;
+    int totalRisk = 0;
+    int stockCount = 0;
+    int bondCount = 0;
+
+    for(int i = 0; i < portfolioAssets.size(); i++){
+      FinancialAsset asset = portfolioAssets.get(i);
+      totalValue += asset.getCurrentValue();
+      totalReturn += asset.calculateReturn();
+      totalRisk += asset.getRiskRating();
+
+      if(asset instanceof Stock){
+        stockCount++;
+      } else if (asset instanceof Bond){
+        bondCount++;
+      }
+    }
+
+    double averageRisk = (double) totalRisk / portfolioAssets.size();
+
+    System.out.println("Total Assets:          " + portfolioAssets.size());
+    System.out.println("  Stocks:              " + stockCount);
+    System.out.println("  Bonds:               " + bondCount);
+    System.out.printf("Total Portfolio Value:  $%.2f%n", totalValue);
+    System.out.printf("Total Expected Return:  $%.2f%n", totalReturn);
+    System.out.printf("Average Risk Rating:    %.1f/10%n", averageRisk);
+  }
+
+  public static void removeAsset(){
+    System.out.println("\n--- Remove Asset ---");
+
+    if(portfolioAssets.isEmpty()){
+      System.out.println("Your portfolio is empty. Nothing to remove.");
+      return;
+    }
+
+    viewPortfolio();
+
+    int index = getValidInt("Enter the asset number to remove", 1, portfolioAssets.size());
+
+    FinancialAsset toRemove = portfolioAssets.get(index - 1);
+    System.out.print("Are you sure you want to remove \"" + toRemove.getName() + "\"? (y/n): ");
+    String confirm = kb.nextLine().trim().toLowerCase();
+
+    if(confirm.equals("y") || confirm.equals("yes")){
+      portfolioAssets.remove(index - 1);
+      System.out.println("Asset removed successfully!");
+    } else{
+      System.out.println("Removal cancelled.");
+    }
+  }
 
   public static int getValidInt(String prompt, int min, int max){
     int value;
