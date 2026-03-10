@@ -165,7 +165,7 @@ public class PortfolioManager{
   * reference and dispatches to the correct child implementation.
   */
   public static void sortPortfolio(){
-    System.out.println("\--- Sort Portfolio ---");
+    System.out.println("\n--- Sort Portfolio ---");
 
     if(portfolioAssets.size() < 2){
       System.out.println("Need at least 2 assets to sort.");
